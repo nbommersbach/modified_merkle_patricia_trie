@@ -13,12 +13,16 @@ class Node
         ~Node();
         std::string get_name();
         std::string get_type();
-        void append_Node(Node* node);
+        void append_node(Node* node);
+        void remove_node(const int index);
+        std::vector<std::string> generate_node_list();
+        std::vector<Node*> get_nodes();
+        
     
     protected:
         std::string m_name;
         std::string m_type;
-        
+
     private:
         std::vector<Node*> m_nodes;
 };
