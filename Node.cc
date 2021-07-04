@@ -1,14 +1,18 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
 #include "Node.h"
 
 Node::Node(const std::string name)
     : m_name(name)
 {
-    std::cout << "Node Constructor called" << std::endl;
+
 }
 
 Node::~Node()
 {
-    std::cout << "Node Destructor called" << std::endl;
+    
 }
 
 std::string Node::get_name() const
@@ -19,6 +23,25 @@ std::string Node::get_name() const
 std::string Node::get_type() const
 {
     return m_type;
+}
+
+void Node::print_nodes() const
+{
+    std::vector<std::string> str = generate_node_list();
+    
+    for(const auto &val : str)
+    {
+        std::cout << val << std::endl;
+    }
+}
+
+bool Node::child_nodes() const
+{
+    if(m_nodes.size() == 0)
+    {
+        return false;
+    }
+    else return true;
 }
 
 void Node::append_node(Node* node)
@@ -36,6 +59,15 @@ void Node::remove_node(const int index)
     m_nodes.erase(m_nodes.begin() + index);
 }
 
+Node* Node::return_node(const int index) const
+{
+    if(m_nodes.size() != 0)
+    {
+        return m_nodes[index];
+    }
+    else return new Node("TREE TERMINATED HERE");
+}
+
 std::vector<std::string> Node::generate_node_list() const
 {
     std::vector<std::string> res;
@@ -45,7 +77,6 @@ std::vector<std::string> Node::generate_node_list() const
         str.append(val->get_type());
         str.append("-node: ");
         str.append(val->get_name());
-        str.append(" | data: ");
         res.push_back(str);
     }
     return res;
@@ -56,16 +87,19 @@ std::vector<std::string> Node::generate_node_list() const
 
 //Branch_Node
 
+Branch_Node::Branch_Node(const std::string name) : Node(name) 
+{
+    m_type = "branch";
+}
+
 Branch_Node::Branch_Node(const std::string name, std::vector<uint32_t> keys) : Node(name)
 {
     m_type = "branch";
     m_keys = keys;
-    std::cout << "Branch Node Constructor called" << std::endl;
 }
 
 Branch_Node::~Branch_Node()
 {
-    std::cout << "Branch Node Destructor called" << std::endl;
 }
 
 std::vector<uint32_t> Branch_Node::get_keys() const
@@ -73,18 +107,24 @@ std::vector<uint32_t> Branch_Node::get_keys() const
     return m_keys;
 }
 
+
+
+
 //Leaf_Node
+
+Leaf_Node::Leaf_Node(const std::string name) : Node(name)
+{
+    m_type = "leaf";
+}
 
 Leaf_Node::Leaf_Node(const std::string name, const uint32_t key) : Node(name)
 {
     m_type = "leaf";
     m_key = key;
-    std::cout << "Leaf Node Constructor called" << std::endl;
 }
 
 Leaf_Node::~Leaf_Node()
 {
-    std::cout << "Leaf Node Destructor called" << std::endl;
 }
 
 uint32_t Leaf_Node::get_key() const
@@ -95,16 +135,20 @@ uint32_t Leaf_Node::get_key() const
 
 //Extension Node
 
+Extension_Node::Extension_Node(const std::string name) : Node(name)
+{
+    m_type = "extension";
+}
+
 Extension_Node::Extension_Node(const std::string name, const uint32_t key) : Node(name)
 {
     m_type = "extension";
     m_key = key;
-    std::cout << "Extension Node Constructor called" << std::endl;
 }
 
 Extension_Node::~Extension_Node()
 {
-    std::cout << "Extension Node Destructor called" << std::endl;
+
 }
 
 uint32_t Extension_Node::get_key() const
