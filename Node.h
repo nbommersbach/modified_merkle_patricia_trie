@@ -11,12 +11,12 @@ class Node
     public:
         Node(const std::string name);
         ~Node();
-        std::string get_name();
-        std::string get_type();
+        std::string get_name() const;
+        std::string get_type() const;
         void append_node(Node* node);
         void remove_node(const int index);
-        std::vector<std::string> generate_node_list();
-        std::vector<Node*> get_nodes();
+        std::vector<std::string> generate_node_list() const;
+        std::vector<Node*> get_nodes() const;
         
     
     protected:
@@ -35,8 +35,12 @@ class Node
 class Branch_Node : public Node
 {
     public:
-        Branch_Node(const std::string name);
+        Branch_Node(const std::string name, std::vector<uint32_t> keys);
         ~Branch_Node();
+        std::vector<uint32_t> get_keys() const;
+
+    private:
+        std::vector<uint32_t> m_keys;
 };
 
 #endif
@@ -48,8 +52,12 @@ class Branch_Node : public Node
 class Leaf_Node : public Node
 {
     public:
-        Leaf_Node(const std::string name);
+        Leaf_Node(const std::string name, const u_int32_t key);
         ~Leaf_Node();
+        u_int32_t get_key() const;
+
+    private:
+        uint32_t m_key;
 };
 
 #endif
@@ -61,8 +69,13 @@ class Leaf_Node : public Node
 class Extension_Node : public Node
 {
     public:
-        Extension_Node(const std::string name);
+        Extension_Node(const std::string name, const uint32_t key);
         ~Extension_Node();
+        u_int32_t get_key() const;
+
+    private:
+        uint32_t m_key;
+
 };
 
 #endif
